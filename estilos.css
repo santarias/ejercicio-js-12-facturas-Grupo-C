@@ -228,3 +228,7 @@ button[type="submit"] {
     width: calc(100% - 200px);
   }
 }
+
+.fila-dummy {
+  display: none;
+}
