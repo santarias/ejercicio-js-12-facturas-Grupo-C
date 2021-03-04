@@ -1,14 +1,10 @@
 let lista;
 
 const cargarDatos = async () => {
-  console.log("Pidiendo datos a la API");
   const respuesta = await fetch("http://localhost:3001/facturas");
   lista = await respuesta.json();
-
   rellenarDatos(lista.filter((factura) => factura.tipo.toLowerCase() === "ingreso"));
 };
-
-// filaRellenar.querySelector(".numero");
 
 const rellenarDatos = (listaDatos) => {
   let sumaTotalIva = 0;
@@ -30,7 +26,7 @@ const rellenarDatos = (listaDatos) => {
     const ivaFactura = (factura.base * (factura.tipoIva / 100));
     sumaTotalIva += ivaFactura;
     base.textContent = `${factura.base}€`;
-    iva.textContent = `${ivaFactura} (${factura.tipoIva}%)`;
+    iva.textContent = `${ivaFactura}€ (${factura.tipoIva}%)`;
     total.textContent = `${(factura.base + ivaFactura)}€`;
     estado.textContent = `${factura.abonada === true ? "Abonada" : "Pendiente"}`;
     estado.classList.add(estado.textContent === "Abonada" ? "table-success" : "table-danger");
@@ -38,12 +34,10 @@ const rellenarDatos = (listaDatos) => {
       vence.textContent = "-";
     } else {
       const fechaAhora = new Date();
-      console.log(fechaAhora);
       const fechaVencimiento = new Date(parseInt(factura.vencimiento)).toLocaleDateString("es-ES");
       vence.textContent = fechaVencimiento;
       vence.classList.add(new Date(parseInt(factura.vencimiento)) > fechaAhora ? "table-success" : "table-danger");
     }
-    console.log(filaRellenar);
 
     const tabla = document.querySelector(".tabla-informacion");
     tabla.append(filaRellenar);
