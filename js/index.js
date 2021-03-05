@@ -34,9 +34,17 @@ const rellenarDatos = (listaDatos) => {
       vence.textContent = "-";
     } else {
       const fechaAhora = new Date();
-      const fechaVencimiento = new Date(parseInt(factura.vencimiento)).toLocaleDateString("es-ES");
-      vence.textContent = fechaVencimiento;
-      vence.classList.add(new Date(parseInt(factura.vencimiento)) > fechaAhora ? "table-success" : "table-danger");
+      // console.log(luxon.DateTime.fromMillis(parseInt(factura.vencimiento)).toLocaleString());
+      const fechaVencimiento = luxon.DateTime.fromMillis(parseInt(factura.vencimiento)).toLocaleString();
+      const algo = luxon.DateTime.fromMillis(parseInt(factura.vencimiento));
+      const diasDiferencia = parseInt(algo.diffNow("days").days.toLocaleString()).toFixed();
+      if (luxon.DateTime.fromMillis(parseInt(factura.vencimiento)) > fechaAhora) {
+        vence.classList.add("table-success");
+        vence.textContent = `${fechaVencimiento} vence en (${diasDiferencia}) dias`;
+      } else {
+        vence.classList.add("table-danger");
+        vence.textContent = `${fechaVencimiento} vencio hace (${Math.abs(diasDiferencia)}) dias`;
+      }
     }
 
     const tabla = document.querySelector(".tabla-informacion");
